@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <style>
+    :root{--ink:#342d28;--muted:#716a63;--accent:#80684d;--paper:#faf8f4;--line:#ddd5cb;--error:#a33c32}*{box-sizing:border-box}body{margin:0;background:#fff;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP","Segoe UI",sans-serif;line-height:1.65}.app{padding:30px}.top{display:flex;justify-content:flex-end;margin-bottom:10px}.lang{display:flex;border:1px solid var(--line);border-radius:20px;overflow:hidden}.lang button{border:0;background:#fff;padding:6px 12px;color:var(--muted);cursor:pointer}.lang button.active{background:var(--ink);color:#fff}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.field{display:grid;gap:6px}.wide{grid-column:1/-1}label{font-size:13px;font-weight:600}label span{color:var(--error);margin-left:3px}input,select,textarea{width:100%;border:1px solid var(--line);border-radius:2px;background:#fff;padding:12px;font:inherit;font-size:16px;color:var(--ink)}textarea{min-height:80px;resize:vertical}input:focus,select:focus,textarea:focus{outline:2px solid rgba(128,104,77,.24);border-color:var(--accent)}.hint{font-size:11px;color:var(--muted)}.actions{margin-top:20px}.quote-btn,.pay-btn{width:100%;border:1px solid var(--accent);background:var(--accent);color:#fff;padding:15px 20px;font:inherit;font-weight:600;letter-spacing:.05em;cursor:pointer}.quote-btn{background:#fff;color:var(--accent)}button:disabled{opacity:.55;cursor:wait}.quote{margin-top:20px;padding:22px;background:var(--paper);border:1px solid var(--line)}.quote[hidden]{display:none}.quote-row{display:flex;justify-content:space-between;gap:20px;padding:7px 0}.quote-total{border-top:1px solid var(--line);margin-top:8px;padding-top:13px;font-size:19px;font-weight:700}.days{font-size:12px;color:var(--muted);margin:10px 0}.agree{display:flex;align-items:flex-start;gap:9px;margin:18px 0;font-size:12px}.agree input{width:auto;margin-top:5px}.policy{max-height:145px;overflow:auto;border:1px solid var(--line);padding:12px;font-size:11px;color:var(--muted)}.message{margin:12px 0;color:var(--error);font-size:13px;min-height:1.5em}.spinner{display:none}.busy .spinner{display:inline}.busy .normal{display:none}@media(max-width:600px){.app{padding:20px 16px}.grid{grid-template-columns:1fr}.wide{grid-column:auto}.quote{padding:17px}}
+  </style>
+</head>
+<body>
+<main class="app">
+  <div class="top"><div class="lang" aria-label="Language"><button type="button" class="active" data-lang="ja">日本語</button><button type="button" data-lang="en">English</button></div></div>
+  <form id="booking-form">
+    <div class="grid">
+      <div class="field"><label data-ja="チェックイン" data-en="Check-in">チェックイン<span>*</span></label><input id="check-in" name="checkIn" type="date" required></div>
+      <div class="field"><label data-ja="チェックアウト" data-en="Check-out">チェックアウト<span>*</span></label><input id="check-out" name="checkOut" type="date" required></div>
+      <div class="field"><label data-ja="大人" data-en="Adults">大人<span>*</span></label><select id="adults" name="adults" required></select></div>
+      <div class="field"><label data-ja="子ども" data-en="Children">子ども<span>*</span></label><select id="children" name="children" required></select><small class="hint" data-ja="子どもを含む合計11名まで" data-en="Maximum 11 guests including children">子どもを含む合計11名まで</small></div>
+    </div>
+    <div class="actions"><button class="quote-btn" id="quote-button" type="button"><span class="normal" data-ja="空室・料金を確認" data-en="Check availability and price">空室・料金を確認</span><span class="spinner" data-ja="確認中…" data-en="Checking…">確認中…</span></button></div>
+    <p class="message" id="message" role="alert"></p>
+    <section class="quote" id="quote" hidden>
+      <div id="daily-breakdown" class="days"></div>
+      <div class="quote-row"><span data-ja="宿泊料金" data-en="Accommodation">宿泊料金</span><strong id="accommodation"></strong></div>
+      <div class="quote-row"><span data-ja="追加人数料金" data-en="Additional guest fee">追加人数料金</span><strong id="extra-fee"></strong></div>
+      <div class="quote-row"><span data-ja="清掃料金" data-en="Cleaning fee">清掃料金</span><strong id="cleaning-fee"></strong></div>
+      <div class="quote-row quote-total"><span data-ja="合計（税込）" data-en="Total (tax included)">合計（税込）</span><strong id="total"></strong></div>
+    </section>
+    <section id="guest-details" hidden>
+      <h2 data-ja="予約者情報" data-en="Guest details">予約者情報</h2>
+      <div class="grid">
+        <div class="field"><label data-ja="代表者氏名" data-en="Guest name">代表者氏名<span>*</span></label><input name="name" autocomplete="name" required></div>
+        <div class="field"><label data-ja="フリガナ（任意）" data-en="Name in Katakana (optional)">フリガナ（任意）</label><input name="nameKana"></div>
+        <div class="field"><label data-ja="メールアドレス" data-en="Email">メールアドレス<span>*</span></label><input name="email" type="email" autocomplete="email" required></div>
+        <div class="field"><label data-ja="電話番号" data-en="Phone">電話番号<span>*</span></label><input name="phone" type="tel" autocomplete="tel" required></div>
+        <div class="field wide"><label data-ja="住所・居住国" data-en="Address and country">住所・居住国<span>*</span></label><input name="addressCountry" autocomplete="street-address" required></div>
+        <div class="field"><label data-ja="到着予定時刻（任意）" data-en="Estimated arrival (optional)">到着予定時刻（任意）</label><input name="arrivalTime" type="time"></div>
+        <div class="field wide"><label data-ja="連絡事項（任意）" data-en="Message (optional)">連絡事項（任意）</label><textarea name="message"></textarea></div>
+      </div>
+      <div class="policy"><b>キャンセルポリシー / Cancellation policy</b><br>宿泊日の8日前まで：無料／7～4日前：宿泊料金の30％／3～2日前：50％／前日：80％／当日・無連絡：100％。返金時は決済手数料等を差し引く場合があります。台風、地震、交通機関の大幅な運休等は個別に対応します。<br><br>Up to 8 days before arrival: free; 7–4 days: 30%; 3–2 days: 50%; previous day: 80%; same day/no-show: 100%. Payment fees may be deducted from refunds. Force-majeure cases are reviewed individually.</div>
+      <label class="agree"><input name="agree" type="checkbox" required><span data-ja="キャンセルポリシー・利用規則・個人情報の取扱いに同意します。" data-en="I agree to the cancellation policy, house rules, and privacy policy.">キャンセルポリシー・利用規則・個人情報の取扱いに同意します。</span></label>
+      <button class="pay-btn" id="pay-button" type="submit"><span class="normal" data-ja="Stripeで支払い、予約を確定する" data-en="Pay with Stripe and confirm">Stripeで支払い、予約を確定する</span><span class="spinner" data-ja="決済画面を準備中…" data-en="Preparing payment…">決済画面を準備中…</span></button>
+      <p class="hint" data-ja="決済完了までの間、日程を20分間仮押さえします。" data-en="Your dates are held for 20 minutes while you pay.">決済完了までの間、日程を20分間仮押さえします。</p>
+    </section>
+  </form>
+</main>
+<script>
+  const $=selector=>document.querySelector(selector);let initial=null;let lastQuote=null;let language='ja';
+  const yen=value=>'¥'+Number(value||0).toLocaleString('ja-JP');
+  const payload=()=>Object.fromEntries(new FormData($('#booking-form')).entries());
+  const setBusy=(button,busy)=>{button.disabled=busy;button.classList.toggle('busy',busy)};
+  const reportHeight=()=>parent.postMessage({type:'nv11-booking-height',height:document.documentElement.scrollHeight+10},'*');
+  const showError=error=>{$('#message').textContent=(error&&error.message)||String(error);reportHeight()};
+  document.querySelectorAll('.lang button').forEach(button=>button.addEventListener('click',()=>{language=button.dataset.lang;document.documentElement.lang=language;document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('active',b===button));document.querySelectorAll('[data-ja][data-en]').forEach(el=>el.childNodes[0].nodeValue=el.dataset[language]);reportHeight()}));
+  google.script.run.withSuccessHandler(data=>{initial=data;['check-in','check-out'].forEach(id=>{$('#'+id).min=data.minDate;$('#'+id).max=data.maxDate});for(let i=1;i<=data.maxGuests;i++)$('#adults').add(new Option(i,i));for(let i=0;i<=data.maxGuests-1;i++)$('#children').add(new Option(i,i));reportHeight()}).withFailureHandler(showError).getInitialData();
+  $('#quote-button').addEventListener('click',()=>{const button=$('#quote-button');setBusy(button,true);$('#message').textContent='';$('#quote').hidden=true;$('#guest-details').hidden=true;google.script.run.withSuccessHandler(quote=>{setBusy(button,false);if(!quote.available){showError(new Error(quote.message));return}lastQuote=quote;$('#accommodation').textContent=yen(quote.accommodation);$('#extra-fee').textContent=yen(quote.extraGuestFee);$('#cleaning-fee').textContent=yen(quote.cleaningFee);$('#total').textContent=yen(quote.total);$('#daily-breakdown').textContent=quote.breakdown.map(day=>day.date+'  '+yen(day.price)+'  '+day.label).join(' ／ ');$('#quote').hidden=false;$('#guest-details').hidden=false;reportHeight()}).withFailureHandler(error=>{setBusy(button,false);showError(error)}).calculateQuote(payload())});
+  ['check-in','check-out','adults','children'].forEach(id=>$('#'+id).addEventListener('change',()=>{lastQuote=null;$('#quote').hidden=true;$('#guest-details').hidden=true;$('#message').textContent='';reportHeight()}));
+  $('#booking-form').addEventListener('submit',event=>{event.preventDefault();if(!lastQuote)return;const button=$('#pay-button');setBusy(button,true);$('#message').textContent='';const data=payload();data.agree=$('[name=agree]').checked;google.script.run.withSuccessHandler(result=>{if(result&&result.checkoutUrl){window.top.location.href=result.checkoutUrl;return}setBusy(button,false);showError(new Error('決済画面を開けませんでした。'))}).withFailureHandler(error=>{setBusy(button,false);showError(error)}).createCheckout(data)});
+  window.addEventListener('load',reportHeight);
+</script>
+</body>
+</html>
